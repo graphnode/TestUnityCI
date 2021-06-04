@@ -1,0 +1,16 @@
+{
+    "name": "Project",
+    "rootNamespace": "TestUnityCI",
+    "references": [
+        "GUID:54a98841e977695498726ffe6144336e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
