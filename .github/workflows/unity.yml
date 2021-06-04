@@ -43,6 +43,7 @@ jobs:
           buildsPath: build
           targetPlatform: StandaloneWindows64
           versioning: Semantic
+          allowDirtyBuild: true # Bad programmer! Bad!
 
       # Output
       - uses: actions/upload-artifact@v2
