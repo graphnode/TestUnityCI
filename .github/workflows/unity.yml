@@ -1,23 +1,32 @@
-name: Actions 😎
+name: Unity
 
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Build my project ✨
+    name: Build
     runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+    
     steps:
+
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           lfs: true
 
       # Cache
       - uses: actions/cache@v2
         with:
           path: Library
-          key: Library-TestUnityCI-StandaloneWindows64
+          key: Library-TestUnityCI-${{ matrix.targetPlatform }}
           restore-keys: |
             Library-TestUnityCI-
             Library-
@@ -41,12 +50,12 @@ jobs:
           unityVersion: 2020.3.10f1
           buildName: TestUnityCI
           buildsPath: build
-          targetPlatform: StandaloneWindows64
+          targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
           allowDirtyBuild: true # Bad programmer! Bad!
 
       # Output
       - uses: actions/upload-artifact@v2
         with:
-          name: TestUnityCI-${{ steps.buildStep.outputs.buildVersion }}
-          path: build
+          name: TestUnityCI-${{ steps.buildStep.outputs.buildVersion }}-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}/
