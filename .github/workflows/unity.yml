@@ -1,0 +1,51 @@
+name: Actions 😎
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      # Cache
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-TestUnityCI-StandaloneWindows64
+          restore-keys: |
+            Library-TestUnityCI-
+            Library-
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          unityVersion: 2020.3.10f1
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build
+      - name: Build project
+        id: buildStep
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          unityVersion: 2020.3.10f1
+          buildName: TestUnityCI
+          buildsPath: build
+          targetPlatform: StandaloneWindows64
+          versioning: Semantic
+
+      # Output
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TestUnityCI-${{ steps.buildStep.outputs.buildVersion }}
+          path: build/TestUnityCI/
