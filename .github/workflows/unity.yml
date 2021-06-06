@@ -15,6 +15,7 @@ jobs:
       matrix:
         targetPlatform:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - WebGL # WebGL.
     
     steps:
 
@@ -40,7 +41,7 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          unityVersion: 2020.3.10f1
+          unityVersion: auto
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       # Build
@@ -50,7 +51,7 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          unityVersion: 2020.3.10f1
+          unityVersion: auto
           buildName: TestUnityCI
           buildsPath: build
           targetPlatform: ${{ matrix.targetPlatform }}
